@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mohsin_ali/components.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LandingPageWeb extends StatefulWidget {
   const LandingPageWeb({super.key});
@@ -10,13 +12,61 @@ class LandingPageWeb extends StatefulWidget {
 }
 
 class _LandingPageWebState extends State<LandingPageWeb> {
+  urlLauncher(String imgpath, String url) {
+    return IconButton(
+      icon: SvgPicture.asset(
+        imgpath,
+        width: 35.0,
+        color: Colors.black,
+      ),
+      onPressed: () async {
+        await launchUrl(
+          Uri.parse(url),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     return MaterialApp(
       home: Scaffold(
-        drawer: Drawer(),
+        drawer: Drawer(
+          backgroundColor: Colors.white,
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 72.0,
+                backgroundColor: Colors.tealAccent,
+                child: CircleAvatar(
+                  radius: 70.0,
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage('assets/MohsinAli.jpeg'),
+                ),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              SansBold('Mohsin Ali Rashid', 30.0),
+              SizedBox(
+                height: 15.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  urlLauncher('assets/instagram2.svg',
+                      'https://www.instagram.com/mohsinalirashid/'),
+                  urlLauncher("assets/twitter.svg",
+                      'https://www.x.com/mohsinalirashid/'),
+                  urlLauncher(
+                      "assets/github.svg", 'https://github.com/mohsinkhawaja'),
+                ],
+              ),
+            ],
+          ),
+        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -31,24 +81,26 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                 flex: 3,
               ),
               TabsWeb(
-                "Home",
+                title: "Home",
+                route: '/',
               ),
               Spacer(),
               TabsWeb(
-                "Work",
+                title: "Work",
+                route: '/work',
               ),
               Spacer(),
               TabsWeb(
-                "Blog",
+                title: "Blog",
+                route: '/blog',
               ),
               Spacer(),
               TabsWeb(
-                "About",
+                title: "About",
+                route: '/about',
               ),
               Spacer(),
-              TabsWeb(
-                "Contact",
-              ),
+              TabsWeb(title: 'Contact', route: '/contact'),
               Spacer(),
             ],
           ),
@@ -116,7 +168,7 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                         children: [
                           Icon(Icons.location_pin),
                           SizedBox(
-                            width: 15,
+                            width: 15.0,
                           ),
                           Sans('Rawalakot,AJK', 15),
                         ],
@@ -144,7 +196,7 @@ class _LandingPageWebState extends State<LandingPageWeb> {
             ),
             //Second Web Page
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
               child: Container(
                 height: heightDevice / 1.5,
                 child: Row(
@@ -153,7 +205,7 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                   children: [
                     Image.asset(
                       'assets/web.jpg',
-                      height: heightDevice / 1.7,
+                      height: widthDevice / 1.9,
                     ),
                     Spacer(),
                     Expanded(
@@ -168,17 +220,19 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                           ),
                           Sans(
                               'Hello I am Mohsin Ali specialized in flutter development',
-                              15),
+                              15.0),
                           Sans(
                               'I strive to ensure astounding performance with state of',
-                              15),
+                              15.0),
                           Sans(
-                              'The art security for Android ,Mac, Linux,Web and Wndows',
-                              15),
+                              'the art security for Android ,Mac, Linux,Web and Wndows',
+                              15.0),
                           SizedBox(
-                            height: 15,
+                            height: 15.0,
                           ),
                           Wrap(
+                            spacing: 2.0,
+                            runSpacing: 5.0,
                             children: [
                               Container(
                                 decoration: BoxDecoration(
@@ -238,7 +292,7 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                                 child: Sans('Windows', 15),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 10.0,
                               ),
                               Container(
                                 decoration: BoxDecoration(
@@ -250,10 +304,10 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 padding: EdgeInsets.all(7),
-                                child: Sans('iOX', 15),
+                                child: Sans('iOS', 15),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 10.0,
                               ),
                             ],
                           ),
@@ -274,75 +328,18 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Card(
-                        elevation: 30.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(
-                                'assets/webL.png',
-                                height: 200,
-                                width: 200,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SansBold('Web Development', 15),
-                            ],
-                          ),
-                        ),
+                      AnimatedCard(
+                        imagePath: 'assets/web.jpg',
+                        text: 'Web Development',
+                        fit: BoxFit.contain,
+                        reverse: true,
                       ),
-                      Card(
-                        elevation: 30.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(
-                                'assets/app.png',
-                                height: 200,
-                                width: 200,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SansBold('App Development', 15),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Card(
-                        elevation: 30.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(
-                                'assets/firebase.png',
-                                height: 200,
-                                width: 200,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SansBold('Back-end Development', 15),
-                            ],
-                          ),
-                        ),
+                      AnimatedCard(
+                          imagePath: 'assets/app.png', text: 'App Development'),
+                      AnimatedCard(
+                        imagePath: 'assets/firebase.png',
+                        text: 'Back-end Development',
+                        reverse: true,
                       ),
                     ],
                   ),
@@ -362,47 +359,61 @@ class _LandingPageWebState extends State<LandingPageWeb> {
                       Column(
                         children: [
                           TextForm(
-                              heading: 'First Name',
-                              width: 350,
+                              text: 'First Name',
+                              containerWidth: 350.0,
                               hintText: 'Enter First Name'),
                           SizedBox(
-                            height: 15,
+                            height: 15.0,
                           ),
                           TextForm(
-                              heading: 'Email',
-                              width: 350,
+                              text: 'Email',
+                              containerWidth: 350.0,
                               hintText: 'abc@gmail.com '),
                         ],
                       ),
                       Column(
                         children: [
                           TextForm(
-                              heading: 'Last Name',
-                              width: 350,
+                              text: 'Last Name',
+                              containerWidth: 350.0,
                               hintText: 'Enter Last Name'),
                           SizedBox(
-                            height: 15,
+                            height: 15.0,
                           ),
                           TextForm(
-                              heading: 'Phone Number',
-                              width: 350,
+                              text: 'Phone Number',
+                              containerWidth: 350.0,
                               hintText: '+92 11 23456678'),
                         ],
                       ),
                     ],
                   ),
                   TextForm(
-                    heading: 'Message',
-                    width: widthDevice / 1.55,
+                    text: 'Message',
+                    containerWidth: widthDevice / 1.55,
                     hintText: 'Please type your message here',
                     maxLines: 10,
                   ),
+                  MaterialButton(
+                      elevation: 20.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      color: Colors.teal,
+                      height: 60.0,
+                      minWidth: 200.0,
+                      child: SansBold("Submit", 20.0),
+                      onPressed: () {}),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 20.0,
             ),
           ],
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

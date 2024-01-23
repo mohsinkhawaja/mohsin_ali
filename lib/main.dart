@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mohsin_ali/mobile/landing_page_mobile.dart';
+import 'package:mohsin_ali/routes.dart';
 import 'package:mohsin_ali/web/landing_page_web.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:url_strategy/url_strategy.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  setPathUrlStrategy();
   runApp(const MyApp());
 }
 
@@ -14,16 +24,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //layoutBuilder for responsive screens
       //constraints are basically used to set height and width
-      home: LayoutBuilder(
-        builder:(context,constraints){
-          //maxWidth will give width of device
-          if(constraints.maxWidth>800){
-            return LandingPageWeb();
-          }else{
-            return LandingPageMobile();
-          }
-        } ,
-      ),
+      onGenerateRoute: (settings) => Routes.generateRoute(settings),
+      initialRoute: '/',
+
       debugShowCheckedModeBanner: false,
     );
   }
